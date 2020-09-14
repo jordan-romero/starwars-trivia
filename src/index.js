@@ -19,9 +19,11 @@ function renderCharacters(json){
 }
 
 function renderCharacter(character){
-    character.name, character.species, character.homeworld
    let div = document.createElement('div')
    div.innerText = `${character.name}, ${character.species}, ${character.homeworld}`
+   let img = document.createElement('img')
+   img.src = character.avatar
+   div.appendChild(img)
    main.appendChild(div)
 }
 
