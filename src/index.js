@@ -35,7 +35,7 @@ charForm.addEventListener("submit", (e) => {
     newChar(charName.value, charSpecies.value, charPlanet.value, charImg.value)
 })
 
-function newChar(name, species, planet, avatar){
+function newChar(name, species, homeworld, avatar){
     let configObj = {
         method: "POST",
         headers: {
@@ -45,7 +45,7 @@ function newChar(name, species, planet, avatar){
         body: JSON.stringify({
           name,
           species,
-          planet,
+          homeworld,
           avatar
         })
       };
@@ -55,14 +55,9 @@ function newChar(name, species, planet, avatar){
         return response.json();
       })
       .then(function(object){
-        renderCharacters(object)
+        renderCharacter(object)
       })
 }
-
-//fetch post 
-//add create action
-//send the json
-//renderCharacters
 
 function fetchCharacters(){
     fetch(CHARACTERS_URL)
@@ -92,7 +87,36 @@ function renderCharacter(character){
    let planetTitle = document.createElement('h4')
    planetTitle.innerText = `Home Planet: ${character.homeworld}`
    planetTitle.className = "character-homeworld"
-   charCard.append(h3, img, h4, planetTitle)
+   let deleteBtn = document.createElement('button')
+   deleteBtn.dataset.id = character.id
+   deleteBtn.innerText = "Death!"
+   deleteBtn.addEventListener('click', (e) => {
+       killCharacter(e);
+   })
+   charCard.append(h3, img, h4, planetTitle, deleteBtn)
+}
+
+function killCharacter(e){
+    e.preventDefault();
+    let characterId = e.target.getAttribute('data-id')
+    deleteCharacter(characterId, e)
+}
+
+function deleteCharacter(characterId, e){
+    fetch(`${CHARACTERS_URL}/${characterId}`, {
+        method: 'delete'
+    })
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(object){
+        removeCharacterFromDom(object, e);
+    })
+}
+
+function removeCharacterFromDom(object, e){
+    alert(object.message);
+    e.target.parentElement.remove()
 }
 
 
