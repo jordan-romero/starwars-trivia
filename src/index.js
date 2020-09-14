@@ -3,7 +3,66 @@ const BASE_URL = "http://localhost:3000";
 const CHARACTERS_URL = `${BASE_URL}/characters`;
 const main = document.querySelector("main")
 const charactersDiv = document.createElement("div")
+// const addButton = document.createElement("button")
+// addButton.innerText = "Add a New Character!"
+// addButton.id = "add-character-btn"
 main.append(charactersDiv)
+
+
+let modalBtn = document.getElementById("modal-btn")
+let modal = document.querySelector(".modal")
+let closeBtn = document.querySelector(".close-btn")
+modalBtn.onclick = function(){
+  modal.style.display = "block"
+}
+closeBtn.onclick = function(){
+  modal.style.display = "none"
+}
+window.onclick = function(e){
+  if(e.target == modal){
+    modal.style.display = "none"
+  }
+}
+
+let charForm = document.querySelector('.container')
+charForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    alert("submitted!!");
+    let charName = document.querySelector("input[name='name']");
+    let charSpecies = document.querySelector("input[name='species']");
+    let charPlanet = document.querySelector("input[name='homeworld']");
+    let charImg = document.querySelector("input[name='avatar']");
+    newChar(charName.value, charSpecies.value, charPlanet.value, charImg.value)
+})
+
+function newChar(name, species, planet, avatar){
+    let configObj = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          name,
+          species,
+          planet,
+          avatar
+        })
+      };
+
+      return fetch(CHARACTERS_URL, configObj)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(object){
+        renderCharacters(object)
+      })
+}
+
+//fetch post 
+//add create action
+//send the json
+//renderCharacters
 
 function fetchCharacters(){
     fetch(CHARACTERS_URL)
