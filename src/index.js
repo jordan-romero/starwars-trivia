@@ -90,11 +90,82 @@ function renderCharacter(character){
    let deleteBtn = document.createElement('button')
    deleteBtn.dataset.id = character.id
    deleteBtn.innerText = "Death!"
+   deleteBtn.className = "delete-btn"
    deleteBtn.addEventListener('click', (e) => {
        killCharacter(e);
    })
-   charCard.append(h3, img, h4, planetTitle, deleteBtn)
+   let editBtn = document.createElement('button')
+   editBtn.dataset.id = character.id
+   editBtn.innerText = "Evolve!"
+   editBtn.id = 'edit-button'
+   editBtn.addEventListener('click', (e) => {
+    alert(`You tried to update ${character.name}! Coming soon...`)
+    // editCharacter(e);
+})
+   charCard.append(h3, img, h4, planetTitle, editBtn, deleteBtn)
 }
+
+
+// let editModalBtn = document.getElementById("edit-button")
+// let editModal = document.querySelector(".edit-modal")
+
+// editModalBtn.onclick = function(){
+//   editModal.style.display = "block"
+// }
+
+// window.onclick = function(e){
+//   if(e.target == modal){
+//     editModal.style.display = "none"
+//   }
+// }
+
+//////////////////////////////////////
+
+// function editCharacter(e){
+//     e.preventDefault();
+//     // let characterId = e.target.getAttribute('data-id')
+//     // updateCharacterForm(characterId, e)
+// }
+
+// function updateCharacterForm(characterId, e){
+//     // let editBtn = document.querySelector("#edit-button")
+//     let editModalDiv = document.createElement('div')
+//     editModalDiv.className = 'edit-modal-content'
+//     let editModalContainer = document.createElement('div')
+//     editModalContainer.className = 'edit-modal-container'
+//     let editForm = document.createElement('form')
+//     editForm.setAttribute('method',"post");
+//     editForm.setAttribute('action',"submit.php");
+//     editForm.className = 'edit-character-form'
+//     let editInput = document.createElement('input')
+//     editInput.setAttribute('type',"text");
+//     editInput.setAttribute('name',"name");
+//     editInput.setAttribute('placeholder',"name");
+//     editInput.className = "input-text"
+//     let editSpeciesInput = document.createElement('input')
+//     editSpeciesInput.setAttribute('type',"text")
+//     editSpeciesInput.setAttribute('name',"species");
+//     editSpeciesInput.className = "input-text"
+
+//     main.appendChild(editModalDiv)
+//     editModalDiv.appendChild(editModalContainer)
+//     editModalContainer.appendChild(editForm)
+//     editForm.appendChild(editInput)
+//     editForm.appendChild(editSpeciesInput)
+//     // updateCharacter()
+// }
+
+// function updateCharacter(characterId, e){
+//     fetch(`${CHARACTERS_URL}/${characterId}`, {
+//         method: 'patch'
+//     })
+//     .then(function(response){
+//         return response.json();
+//     })
+//     .then(function(object){
+//         renderCharacter(object, e);
+//     })
+// }
 
 function killCharacter(e){
     e.preventDefault();
@@ -118,6 +189,17 @@ function removeCharacterFromDom(object, e){
     alert(object.message);
     e.target.parentElement.remove()
 }
+/*
+finish CRUDs (U) ---> with modal, form prepopulated  wtf how does one update with JS???
+add Planet Model 
+    -planet :name
+    - look to API for infos later
+    - planet has_many :characters
+    - character belongs_to :planet
+refactor .html move to index.js
+once we learn shit:
+    refactor to classes
+*/
 
 
 
