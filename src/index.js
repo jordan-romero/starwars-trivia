@@ -99,25 +99,52 @@ function renderCharacter(character){
    editBtn.innerText = "Evolve!"
    editBtn.id = 'edit-button'
    editBtn.addEventListener('click', (e) => {
-    alert(`You tried to update ${character.name}! Coming soon...`)
-    // editCharacter(e);
+    function openForm(e) {
+      e.preventDefault(); 
+      document.getElementById("myForm").style.display = "block";
+      let editFormContainer = document.querySelector('.form-container');
+      editFormContainer.innerHTML = `
+      <input type="text" name="name" value="${character.name}"class="input-text"/>
+      <input type="text" name="species" value="${character.species}"class="input-text"/>
+      <input type="text" name="homeworld" value="${character.homeworld}"class="input-text"/>
+      <input type="text" name="avatar" value="${character.avatar}"class="input-text"/>
+      <button type="submit" class="btn">Submit</button>
+      <button class="btn cancel">Close</button>
+      `
+      let charName = document.querySelector("input[name='name']");
+      let charSpecies = document.querySelector("input[name='species']");
+      let charPlanet = document.querySelector("input[name='homeworld']");
+      let charImg = document.querySelector("input[name='avatar']");
+      // let submit = document.querySelector(".btn")
+      editFormContainer.addEventListener("submit", (e) => {
+        e.preventDefault();
+        updateCharacter(character, charName.value, charSpecies.value, charPlanet.value, charImg.value)
+   
+      })
+    
+    }
+    openForm(e); 
 })
    charCard.append(h3, img, h4, planetTitle, editBtn, deleteBtn)
 }
 
+// function openForm(e) {
+//   e.preventDefault(); 
+//   document.getElementById("myForm").style.display = "block";
+//   let editFormContainer = document.querySelector('.form-container');
+//   editFormContainer.innerHTML = `
+//   <input type="text" name="name" value="" class="input-text"/>
+//   `
+  
 
-// let editModalBtn = document.getElementById("edit-button")
-// let editModal = document.querySelector(".edit-modal")
-
-// editModalBtn.onclick = function(){
-//   editModal.style.display = "block"
 // }
 
-// window.onclick = function(e){
-//   if(e.target == modal){
-//     editModal.style.display = "none"
-//   }
-// }
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
+
+
 
 //////////////////////////////////////
 
@@ -155,17 +182,30 @@ function renderCharacter(character){
 //     // updateCharacter()
 // }
 
-// function updateCharacter(characterId, e){
-//     fetch(`${CHARACTERS_URL}/${characterId}`, {
-//         method: 'patch'
-//     })
-//     .then(function(response){
-//         return response.json();
-//     })
-//     .then(function(object){
-//         renderCharacter(object, e);
-//     })
-// }
+
+function updateCharacter(character, name, species, homeworld, avatar, e){
+  let configObj = {
+    method: "patch",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      name,
+      species,
+      homeworld,
+      avatar
+    })
+  };
+    fetch(`${CHARACTERS_URL}/${character.id}`, configObj)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(object){
+        // renderCharacter(object, e);
+        console.log(object); 
+    })
+}
 
 function killCharacter(e){
     e.preventDefault();
