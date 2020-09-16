@@ -118,7 +118,7 @@ function renderCharacter(character){
       // let submit = document.querySelector(".btn")
       editFormContainer.addEventListener("submit", (e) => {
         e.preventDefault();
-        updateCharacter(character, charName.value, charSpecies.value, charPlanet.value, charImg.value)
+        updateCharacter(character)
    
       })
     
@@ -183,21 +183,9 @@ function closeForm() {
 // }
 
 
-function updateCharacter(character, name, species, homeworld, avatar, e){
-  let configObj = {
-    method: "patch",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify({
-      name,
-      species,
-      homeworld,
-      avatar
-    })
-  };
-    fetch(`${CHARACTERS_URL}/${character.id}`, configObj)
+function updateCharacter(character, e){
+    fetch(`${CHARACTERS_URL}/${character.id}`, {
+    method: 'patch'})
     .then(function(response){
         return response.json();
     })
@@ -205,7 +193,7 @@ function updateCharacter(character, name, species, homeworld, avatar, e){
         // renderCharacter(object, e);
         console.log(object); 
     })
-}
+  }
 
 function killCharacter(e){
     e.preventDefault();
