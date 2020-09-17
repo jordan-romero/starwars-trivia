@@ -5,12 +5,47 @@ const body = document.querySelector("body")
 const modal = document.querySelector("#myModal")
 // const main = document.querySelector("main")
 // const charactersDiv = document.createElement("div")
-// const addButton = document.createElement("button") //
-// addButton.innerText = "Add a New Character!" //
-// addButton.id = "add-character-btn" //
+const addButton = document.createElement("button") 
+addButton.innerText = "Add a New Character!" 
+addButton.id = "add-character-btn" 
+body.appendChild(addButton)
 // main.append(charactersDiv)
 
-
+addButton.addEventListener("click", () => {
+  const modalContent = document.querySelector(".modal-content")
+    const form = document.createElement("form")
+    form.innerHTML = `
+      <input type="text" name="name" placeholder="Name..."class="input-text"/>
+      <input type="text" name="species" placeholder="Species..."class="input-text"/>
+      <input type="text" name="homeworld" placeholder="Home Planet..."class="input-text"/>
+      <input type="text" name="avatar" placeholder="Image URL..."class="input-text"/>
+      <input type="submit" value="Submit">
+      <br>`
+    modalContent.appendChild(form)
+    modal.style.display = "block"
+    form.addEventListener("submit", (e) => {
+      e.preventDefault()
+      const data = {
+        name: e.target.name.value,
+        species: e.target.species.value,
+        homeworld: e.target.homeworld.value,
+        avatar: e.target.avatar.value
+      }
+      fetch(`${CHARACTERS_URL}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then( newCharacter => {
+          renderCharacter(newCharacter)
+          modal.style.display = "none";
+          modal.querySelector("form").remove()
+      })
+    })
+})
 // let modalBtn = document.getElementById("modal-btn")
 // let modal = document.querySelector(".modal")
 // let closeBtn = document.querySelector(".close-btn")
