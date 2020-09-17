@@ -203,5 +203,13 @@ body {
   opacity: 1;
 }
 
+.character-button.delete {
+  background-color: red;
+}
+
+.character-button:hover {
+  background-color: black;
+  text-decoration: underline;
+}
 
   

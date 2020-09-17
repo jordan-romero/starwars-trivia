@@ -69,81 +69,106 @@ function fetchCharacters(){
 function renderCharacters(json){
     const charactersList = document.createElement("div")
     body.appendChild(charactersList)
+    charactersList.className = "characters-list"
+    console.log(charactersList)
     json.forEach(character => {
        renderCharacter(character)
     })
 }
 
 function renderCharacter(character){
-   let charCard = document.createElement('div')
-   charCard.className = "character-card"
-   charCard.dataset.id = character.id
-   characterCardContent(charCard, character)
-   charactersDiv.appendChild(charCard)
-}
-
-function characterCardContent(charCard, character){
-
-   let img = document.createElement('img')
-   img.src = character.avatar
-   img.className = "character-avatar"
-   let h3 = document.createElement('h3')
-   h3.innerText = `${character.name}`
-   h3.className = "character-name"
-   let h4 = document.createElement('h4')
-   h4.innerText = `Species: ${character.species}`
-   h4.className = "character-species"
-   let planetTitle = document.createElement('h4')
-   planetTitle.innerText = `Home Planet: ${character.homeworld}`
-   planetTitle.className = "character-homeworld"
-   let deleteBtn = document.createElement('button')
-   deleteBtn.dataset.id = character.id
-   deleteBtn.innerText = "Death!"
-   deleteBtn.className = "delete-btn"
-   deleteBtn.addEventListener('click', (e) => {
-       killCharacter(e);
-   })
-   let editBtn = document.createElement('button')
-   editBtn.innerText = "Evolve!"
-   editBtn.id = 'edit-button'
-   editBtn.addEventListener('click', (e) => {
-    const popUp = document.getElementById("myForm");
-    popUp.style.display = "block"
-    let editFormContainer = document.querySelector('.form-container');
-    editFormContainer.dataset.id = character.id
-    editFormContainer.innerHTML = `
-      <input type="text" name="name" value="${character.name}"class="input-text"/>
-      <input type="text" name="species" value="${character.species}"class="input-text"/>
-      <input type="text" name="homeworld" value="${character.homeworld}"class="input-text"/>
-      <input type="text" name="avatar" value="${character.avatar}"class="input-text"/>
-      <button type="submit" class="btn">Submit</button>
-      <button class="cancel">Close</button>
+  const charactersList = document.querySelector(".characters-list")
+  const div = document.createElement("div")
+  div.classList.add("character-card")
+  div.innerHTML = `
+    <img class="character-avatar" src="${character.avatar}" alt=${character.name}/>
+    <p><strong>${character.name}</strong></p>
+    <p>Home Planet: ${character.homeworld}</p>
+    <p>Species: ${character.species}</p>
     `
-      // let formPopup = document.querySelector(".form-popup")
-      // let closeBtn = document.createElement('button')
-      // closeBtn.className = "cancel"
-      // closeBtn.innerText = "Close"
-      // formPopup.append(closeBtn)
-    let popup = document.querySelector(".cancel")
-    popup.addEventListener("click", () => {
-      closeForm()
-      closeBtn.remove()
+  const deleteButton = document.createElement("div")
+  deleteButton.className = "delete character-button"
+  deleteButton.innerText = `Death to ${character.name}!`
+  deleteButton.addEventListener("click", () => {
+    fetch(`${CHARACTERS_URL}/${character.id}`, {
+      method: "DELETE"
     })
-
-    editFormContainer.addEventListener("submit", (e) => {
-      console.log(e.target)
-      e.preventDefault();
-      let charName = editFormContainer.name.value
-      let charSpecies = editFormContainer.species.value
-      let charPlanet = editFormContainer.homeworld.value
-      let charImg = editFormContainer.avatar.value
-      updateCharacter(charName, charSpecies, charPlanet, charImg, e, charCard)
-      // console.log(charName, charSpecies, charPlanet, charImg, e)
-      // console.log(e.target.getAttribute('data-id'))
-    })
+    .then(res=> res.json())
+    .then(() => div.remove())
   })
-  charCard.append(h3, img, h4, planetTitle, editBtn, deleteBtn)
+  div.append(deleteButton)
+
+  charactersList.appendChild(div)
+
+  //  let charCard = document.createElement('div')
+  //  charCard.className = "character-card"
+  //  charCard.dataset.id = character.id
+  //  characterCardContent(charCard, character)
+  //  charactersDiv.appendChild(charCard)
 }
+
+// function characterCardContent(charCard, character){
+
+//    let img = document.createElement('img')
+//    img.src = character.avatar
+//    img.className = "character-avatar"
+//    let h3 = document.createElement('h3')
+//    h3.innerText = `${character.name}`
+//    h3.className = "character-name"
+//    let h4 = document.createElement('h4')
+//    h4.innerText = `Species: ${character.species}`
+//    h4.className = "character-species"
+//    let planetTitle = document.createElement('h4')
+//    planetTitle.innerText = `Home Planet: ${character.homeworld}`
+//    planetTitle.className = "character-homeworld"
+//    let deleteBtn = document.createElement('button')
+//    deleteBtn.dataset.id = character.id
+//    deleteBtn.innerText = "Death!"
+//    deleteBtn.className = "delete-btn"
+//    deleteBtn.addEventListener('click', (e) => {
+//        killCharacter(e);
+//    })
+//    let editBtn = document.createElement('button')
+//    editBtn.innerText = "Evolve!"
+//    editBtn.id = 'edit-button'
+//    editBtn.addEventListener('click', (e) => {
+//     const popUp = document.getElementById("myForm");
+//     popUp.style.display = "block"
+//     let editFormContainer = document.querySelector('.form-container');
+//     editFormContainer.dataset.id = character.id
+//     editFormContainer.innerHTML = `
+//       <input type="text" name="name" value="${character.name}"class="input-text"/>
+//       <input type="text" name="species" value="${character.species}"class="input-text"/>
+//       <input type="text" name="homeworld" value="${character.homeworld}"class="input-text"/>
+//       <input type="text" name="avatar" value="${character.avatar}"class="input-text"/>
+//       <button type="submit" class="btn">Submit</button>
+//       <button class="cancel">Close</button>
+//     `
+//       // let formPopup = document.querySelector(".form-popup")
+//       // let closeBtn = document.createElement('button')
+//       // closeBtn.className = "cancel"
+//       // closeBtn.innerText = "Close"
+//       // formPopup.append(closeBtn)
+//     let popup = document.querySelector(".cancel")
+//     popup.addEventListener("click", () => {
+//       closeForm()
+//       closeBtn.remove()
+//     })
+
+//     editFormContainer.addEventListener("submit", (e) => {
+//       console.log(e.target)
+//       e.preventDefault();
+//       let charName = editFormContainer.name.value
+//       let charSpecies = editFormContainer.species.value
+//       let charPlanet = editFormContainer.homeworld.value
+//       let charImg = editFormContainer.avatar.value
+//       updateCharacter(charName, charSpecies, charPlanet, charImg, e, charCard)
+//       // console.log(charName, charSpecies, charPlanet, charImg, e)
+//       // console.log(e.target.getAttribute('data-id'))
+//     })
+//   })
+//   charCard.append(h3, img, h4, planetTitle, editBtn, deleteBtn)
+// }
 
 
 function closeForm() {
@@ -182,28 +207,28 @@ function updateCharacter(name, species, homeworld, avatar, e, charCard){
     })
   }
 
-function killCharacter(e){
-    e.preventDefault();
-    let characterId = e.target.getAttribute('data-id')
-    deleteCharacter(characterId, e)
-}
+// function killCharacter(e){
+//     e.preventDefault();
+//     let characterId = e.target.getAttribute('data-id')
+//     deleteCharacter(characterId, e)
+// }
 
-function deleteCharacter(characterId, e){
-    fetch(`${CHARACTERS_URL}/${characterId}`, {
-        method: 'delete'
-    })
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(object){
-        removeCharacterFromDom(object, e);
-    })
-}
+// function deleteCharacter(characterId, e){
+//     fetch(`${CHARACTERS_URL}/${characterId}`, {
+//         method: 'delete'
+//     })
+//     .then(function(response){
+//         return response.json();
+//     })
+//     .then(function(object){
+//         removeCharacterFromDom(object, e);
+//     })
+// }
 
-function removeCharacterFromDom(object, e){
-    alert(object.message);
-    e.target.parentElement.remove()
-}
+// function removeCharacterFromDom(object, e){
+//     alert(object.message);
+//     e.target.parentElement.remove()
+// }
 
 /*
 finish CRUDs (U) ---> with modal, form prepopulated  wtf how does one update with JS???
