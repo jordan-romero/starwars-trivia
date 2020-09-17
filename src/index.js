@@ -74,10 +74,16 @@ function renderCharacters(json){
 function renderCharacter(character){
    let charCard = document.createElement('div')
    charCard.className = "character-card"
+   charCard.dataset.id = character.id
+   characterCardContent(charCard, character)
+   charactersDiv.appendChild(charCard)
+}
+
+function characterCardContent(charCard, character){
+
    let img = document.createElement('img')
    img.src = character.avatar
    img.className = "character-avatar"
-   charactersDiv.appendChild(charCard)
    let h3 = document.createElement('h3')
    h3.innerText = `${character.name}`
    h3.className = "character-name"
@@ -95,49 +101,47 @@ function renderCharacter(character){
        killCharacter(e);
    })
    let editBtn = document.createElement('button')
-   editBtn.dataset.id = character.id
    editBtn.innerText = "Evolve!"
    editBtn.id = 'edit-button'
    editBtn.addEventListener('click', (e) => {
-    function openForm(e) {
-      e.preventDefault(); 
-      document.getElementById("myForm").style.display = "block";
-      let editFormContainer = document.querySelector('.form-container');
-      editFormContainer.innerHTML = `
+    const popUp = document.getElementById("myForm");
+    popUp.style.display = "block"
+    let editFormContainer = document.querySelector('.form-container');
+    editFormContainer.dataset.id = character.id
+    editFormContainer.innerHTML = `
       <input type="text" name="name" value="${character.name}"class="input-text"/>
       <input type="text" name="species" value="${character.species}"class="input-text"/>
       <input type="text" name="homeworld" value="${character.homeworld}"class="input-text"/>
       <input type="text" name="avatar" value="${character.avatar}"class="input-text"/>
       <button type="submit" class="btn">Submit</button>
-      <button class="btn cancel">Close</button>
-      `
-      let charName = document.querySelector("input[name='name']");
-      let charSpecies = document.querySelector("input[name='species']");
-      let charPlanet = document.querySelector("input[name='homeworld']");
-      let charImg = document.querySelector("input[name='avatar']");
-      // let submit = document.querySelector(".btn")
-      editFormContainer.addEventListener("submit", (e) => {
-        e.preventDefault();
-        updateCharacter(character)
-   
-      })
-    
-    }
-    openForm(e); 
-})
-   charCard.append(h3, img, h4, planetTitle, editBtn, deleteBtn)
+      <button class="cancel">Close</button>
+    `
+      // let formPopup = document.querySelector(".form-popup")
+      // let closeBtn = document.createElement('button')
+      // closeBtn.className = "cancel"
+      // closeBtn.innerText = "Close"
+      // formPopup.append(closeBtn)
+    let popup = document.querySelector(".cancel")
+    popup.addEventListener("click", () => {
+      closeForm()
+      closeBtn.remove()
+    })
+
+    editFormContainer.addEventListener("submit", (e) => {
+      console.log(e.target)
+      e.preventDefault();
+      let charName = editFormContainer.name.value
+      let charSpecies = editFormContainer.species.value
+      let charPlanet = editFormContainer.homeworld.value
+      let charImg = editFormContainer.avatar.value
+      updateCharacter(charName, charSpecies, charPlanet, charImg, e, charCard)
+      // console.log(charName, charSpecies, charPlanet, charImg, e)
+      // console.log(e.target.getAttribute('data-id'))
+    })
+  })
+  charCard.append(h3, img, h4, planetTitle, editBtn, deleteBtn)
 }
 
-// function openForm(e) {
-//   e.preventDefault(); 
-//   document.getElementById("myForm").style.display = "block";
-//   let editFormContainer = document.querySelector('.form-container');
-//   editFormContainer.innerHTML = `
-//   <input type="text" name="name" value="" class="input-text"/>
-//   `
-  
-
-// }
 
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
@@ -145,53 +149,33 @@ function closeForm() {
 
 
 
-
-//////////////////////////////////////
-
-// function editCharacter(e){
-//     e.preventDefault();
-//     // let characterId = e.target.getAttribute('data-id')
-//     // updateCharacterForm(characterId, e)
-// }
-
-// function updateCharacterForm(characterId, e){
-//     // let editBtn = document.querySelector("#edit-button")
-//     let editModalDiv = document.createElement('div')
-//     editModalDiv.className = 'edit-modal-content'
-//     let editModalContainer = document.createElement('div')
-//     editModalContainer.className = 'edit-modal-container'
-//     let editForm = document.createElement('form')
-//     editForm.setAttribute('method',"post");
-//     editForm.setAttribute('action',"submit.php");
-//     editForm.className = 'edit-character-form'
-//     let editInput = document.createElement('input')
-//     editInput.setAttribute('type',"text");
-//     editInput.setAttribute('name',"name");
-//     editInput.setAttribute('placeholder',"name");
-//     editInput.className = "input-text"
-//     let editSpeciesInput = document.createElement('input')
-//     editSpeciesInput.setAttribute('type',"text")
-//     editSpeciesInput.setAttribute('name',"species");
-//     editSpeciesInput.className = "input-text"
-
-//     main.appendChild(editModalDiv)
-//     editModalDiv.appendChild(editModalContainer)
-//     editModalContainer.appendChild(editForm)
-//     editForm.appendChild(editInput)
-//     editForm.appendChild(editSpeciesInput)
-//     // updateCharacter()
-// }
-
-
-function updateCharacter(character, e){
-    fetch(`${CHARACTERS_URL}/${character.id}`, {
-    method: 'patch'})
+function updateCharacter(name, species, homeworld, avatar, e, charCard){
+  let characterId = e.target.getAttribute('data-id')
+  // console.log(e)
+  // console.log(characterId)
+  let configObj = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      name,
+      species,
+      homeworld,
+      avatar
+    })
+  };
+    fetch(`${CHARACTERS_URL}/${characterId}`, configObj, e, charCard)
     .then(function(response){
         return response.json();
     })
     .then(function(object){
-        // renderCharacter(object, e);
-        console.log(object); 
+        // charCard.remove();
+        // renderCharacter(object);
+        characterCardContent(charCard, object)
+        closeForm()
+        closeBtn.remove()
     })
   }
 
