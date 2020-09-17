@@ -2,6 +2,7 @@
 const BASE_URL = "http://localhost:3000";
 const CHARACTERS_URL = `${BASE_URL}/characters`;
 const body = document.querySelector("body")
+const modal = document.querySelector("#myModal")
 // const main = document.querySelector("main")
 // const charactersDiv = document.createElement("div")
 // const addButton = document.createElement("button") //
@@ -70,7 +71,6 @@ function renderCharacters(json){
     const charactersList = document.createElement("div")
     body.appendChild(charactersList)
     charactersList.className = "characters-list"
-    console.log(charactersList)
     json.forEach(character => {
        renderCharacter(character)
     })
@@ -79,6 +79,17 @@ function renderCharacters(json){
 function renderCharacter(character){
   const charactersList = document.querySelector(".characters-list")
   const div = document.createElement("div")
+  addCharacterDivContent(div, character)
+  charactersList.appendChild(div)
+
+  //  let charCard = document.createElement('div')
+  //  charCard.className = "character-card"
+  //  charCard.dataset.id = character.id
+  //  characterCardContent(charCard, character)
+  //  charactersDiv.appendChild(charCard)
+}
+
+function addCharacterDivContent(div, character){
   div.classList.add("character-card")
   div.innerHTML = `
     <img class="character-avatar" src="${character.avatar}" alt=${character.name}/>
@@ -86,6 +97,49 @@ function renderCharacter(character){
     <p>Home Planet: ${character.homeworld}</p>
     <p>Species: ${character.species}</p>
     `
+  const editButton = document.createElement("div")
+  editButton.className = "edit character-button"
+  editButton.innerText = `Edit ${character.name}'s information.`
+  editButton.addEventListener("click", () => {
+    const modalContent = document.querySelector(".modal-content")
+    const form = document.createElement("form")
+    form.innerHTML = `
+      <label for="name">Name:</label>
+      <input type="text" name="name" value="${character.name}"class="input-text"/>
+      <label for="name">Species:</label>
+      <input type="text" name="species" value="${character.species}"class="input-text"/>
+      <label for="name">Home Planet:</label>
+      <input type="text" name="homeworld" value="${character.homeworld}"class="input-text"/>
+      <label for="name">Image URL:</label>
+      <input type="text" name="avatar" value="${character.avatar}"class="input-text"/>
+      <input type="submit" value="Submit">
+      <br>`
+    modalContent.appendChild(form)
+    modal.style.display = "block"
+    form.addEventListener("submit", (e) => {
+      e.preventDefault()
+      const data = {
+        name: e.target.name.value,
+        species: e.target.species.value,
+        homeworld: e.target.homeworld.value,
+        avatar: e.target.avatar.value
+      }
+      fetch(`${CHARACTERS_URL}/${character.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      .then(response => response.json())
+      .then(updatedCharacter => {
+        addCharacterDivContent(div, updatedCharacter)
+          modal.style.display = "none";
+          modal.querySelector("form").remove()
+      })
+    })
+  })
+  
   const deleteButton = document.createElement("div")
   deleteButton.className = "delete character-button"
   deleteButton.innerText = `Death to ${character.name}!`
@@ -96,15 +150,7 @@ function renderCharacter(character){
     .then(res=> res.json())
     .then(() => div.remove())
   })
-  div.append(deleteButton)
-
-  charactersList.appendChild(div)
-
-  //  let charCard = document.createElement('div')
-  //  charCard.className = "character-card"
-  //  charCard.dataset.id = character.id
-  //  characterCardContent(charCard, character)
-  //  charactersDiv.appendChild(charCard)
+  div.append(editButton, deleteButton)
 }
 
 // function characterCardContent(charCard, character){
@@ -171,41 +217,41 @@ function renderCharacter(character){
 // }
 
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
+// function closeForm() {
+//   document.getElementById("myForm").style.display = "none";
+// }
 
 
 
-function updateCharacter(name, species, homeworld, avatar, e, charCard){
-  let characterId = e.target.getAttribute('data-id')
-  // console.log(e)
-  // console.log(characterId)
-  let configObj = {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify({
-      name,
-      species,
-      homeworld,
-      avatar
-    })
-  };
-    fetch(`${CHARACTERS_URL}/${characterId}`, configObj, e, charCard)
-    .then(function(response){
-        return response.json();
-    })
-    .then(function(object){
-        // charCard.remove();
-        // renderCharacter(object);
-        characterCardContent(charCard, object)
-        closeForm()
-        closeBtn.remove()
-    })
-  }
+// function updateCharacter(name, species, homeworld, avatar, e, charCard){
+//   let characterId = e.target.getAttribute('data-id')
+//   // console.log(e)
+//   // console.log(characterId)
+//   let configObj = {
+//     method: "PATCH",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "Accept": "application/json"
+//     },
+//     body: JSON.stringify({
+//       name,
+//       species,
+//       homeworld,
+//       avatar
+//     })
+//   };
+//     fetch(`${CHARACTERS_URL}/${characterId}`, configObj, e, charCard)
+//     .then(function(response){
+//         return response.json();
+//     })
+//     .then(function(object){
+//         // charCard.remove();
+//         // renderCharacter(object);
+//         characterCardContent(charCard, object)
+//         closeForm()
+//         closeBtn.remove()
+//     })
+//   }
 
 // function killCharacter(e){
 //     e.preventDefault();
@@ -243,3 +289,20 @@ once we learn shit:
 */
 
 fetchCharacters(); 
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+  modal.querySelector("form").remove()
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+    modal.querySelector("form").remove()
+  }
+}
