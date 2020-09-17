@@ -17,7 +17,7 @@ addButton.addEventListener("click", () => {
     form.innerHTML = `
       <input type="text" name="name" placeholder="Name..."class="input-text"/>
       <input type="text" name="species" placeholder="Species..."class="input-text"/>
-      <input type="text" name="homeworld" placeholder="Home Planet..."class="input-text"/>
+      <input type="text" name="planetName" placeholder="Home Planet..."class="input-text"/>
       <input type="text" name="avatar" placeholder="Image URL..."class="input-text"/>
       <input type="submit" value="Submit">
       <br>`
@@ -28,7 +28,7 @@ addButton.addEventListener("click", () => {
       const data = {
         name: e.target.name.value,
         species: e.target.species.value,
-        homeworld: e.target.homeworld.value,
+        planet_name: e.target.planetName.value,
         avatar: e.target.avatar.value
       }
       fetch(`${CHARACTERS_URL}`, {
@@ -99,7 +99,7 @@ addButton.addEventListener("click", () => {
 function fetchCharacters(){
     fetch(CHARACTERS_URL)
     .then(resp => resp.json())
-    .then(json => renderCharacters(json));
+    .then(json => renderCharacters(json)); 
 }
 
 function renderCharacters(json){
@@ -128,9 +128,9 @@ function addCharacterDivContent(div, character){
   div.classList.add("character-card")
   div.innerHTML = `
     <img class="character-avatar" src="${character.avatar}" alt=${character.name}/>
-    <p><strong>${character.name}</strong></p>
-    <p>Home Planet: ${character.homeworld}</p>
-    <p>Species: ${character.species}</p>
+    <p class="character-name"><strong>${character.name}</strong></p>
+    <p class="home-planet">Home Planet: ${character.planet.name}</p>
+    <p class="species-p">Species: ${character.species}</p>
     `
   const editButton = document.createElement("div")
   editButton.className = "edit character-button"
@@ -144,11 +144,12 @@ function addCharacterDivContent(div, character){
       <label for="name">Species:</label>
       <input type="text" name="species" value="${character.species}"class="input-text"/>
       <label for="name">Home Planet:</label>
-      <input type="text" name="homeworld" value="${character.homeworld}"class="input-text"/>
+      <input type="text" name="planetName" value="${character.planet.name}"class="input-text"/> 
       <label for="name">Image URL:</label>
       <input type="text" name="avatar" value="${character.avatar}"class="input-text"/>
       <input type="submit" value="Submit">
       <br>`
+
     modalContent.appendChild(form)
     modal.style.display = "block"
     form.addEventListener("submit", (e) => {
@@ -156,7 +157,7 @@ function addCharacterDivContent(div, character){
       const data = {
         name: e.target.name.value,
         species: e.target.species.value,
-        homeworld: e.target.homeworld.value,
+        planet_name: e.target.planetName.value,
         avatar: e.target.avatar.value
       }
       fetch(`${CHARACTERS_URL}/${character.id}`, {

@@ -7,20 +7,39 @@ body {
 .character-card {
   text-align: center;
   border: grey solid 1px;
+  border-radius: 5px; 
   padding: 1rem;
   width: 15rem;
   height: 34rem;
   display: inline-grid;
   margin: 1rem 2rem;
   box-shadow: 3px 4px gray;
-  background-color: rgb(34, 33, 33)
+  background-color: rgb(34, 33, 33);
+  background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1070&q=80');
+}
+
+
+.character-name {
+  font-size: 25px; 
+  color: whitesmoke;
+  -webkit-text-stroke: .5px blue;
+}
+
+.home-planet {
+  font-size: 20px;
+  -webkit-text-stroke: .25px blue;
+}
+
+.species-p {
+  font-size: 20px;
 }
 
 .character-avatar {
     justify-self: center;
     height: 15rem;
     width: 15rem;
-    border: 1px solid whitesmoke
+    border: 1px solid whitesmoke;
+    border-radius: 5px;
   }
 
   button {
@@ -44,6 +63,8 @@ body {
     border: gray solid 1px;
     color: gray;
   }
+
+  
 
   /* .modal {
     display: none;
@@ -193,18 +214,14 @@ body {
   opacity: 0.8;
 }
 
-/* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
-}
-
-/* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
-  opacity: 1;
-}
 
 .character-button.delete {
-  background-color: red;
+  background-color: rgb(104, 5, 5);
+  border-radius: 4px;
+  margin-top: 6px;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
 }
 
 .character-button:hover {
@@ -213,7 +230,11 @@ body {
 }
 
 .character-button.edit {
-  background-color: blue;
+  background-color: rgb(6, 6, 97);
+  border-radius: 4px;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
 }
 
 /*///////////////////////////*/
@@ -240,6 +261,12 @@ body {
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+  background-image: url('https://images.unsplash.com/photo-1546561892-65bf811416b9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
+  background-size: contain;
+  display: flex;
+  justify-content: space-between; 
+  align-content: space-between;
+
 }
 
 /* The Close Button */
