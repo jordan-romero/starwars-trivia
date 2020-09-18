@@ -6,3 +6,9 @@ MAJOR REFACTOR LONG TERM:
     -then that is sent to SWAPI which is then found or created by in our backend
     -then forever saved in our db
 -on edit people can add descriptions/bios of characters
+
+-Models and Pages to Implement
+    -Films
+    -Starships
+    -Species
+    -Vehicles
