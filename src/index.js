@@ -7,9 +7,28 @@ const modal = document.querySelector("#myModal")
 // const charactersDiv = document.createElement("div")
 const addButton = document.createElement("button") 
 addButton.innerText = "Add a New Character!" 
-addButton.id = "add-character-btn" 
-body.appendChild(addButton)
+addButton.id = "add-character-btn"
+
+function addCharButton(){
+  body.appendChild(addButton)
+}
 // main.append(charactersDiv)
+
+// const charactersList = document.createElement("div")
+// charactersList.className = "characters-list"
+// const planetsList = document.createElement("div")
+// planetsList.className = "planets-list"
+
+const charactersButton = document.querySelector(".characters-button")
+charactersButton.addEventListener("click", () => {
+  fetchCharacters(); 
+  addCharButton();
+  // planetsList.innerHTML = ""
+})
+
+
+
+
 
 addButton.addEventListener("click", () => {
   const modalContent = document.querySelector(".modal-content")
@@ -324,7 +343,6 @@ once we learn shit:
     refactor to classes
 */
 
-fetchCharacters(); 
 
 // Get the <span> element that closes the modal
 let span = document.getElementsByClassName("close")[0];

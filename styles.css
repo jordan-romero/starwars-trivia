@@ -1,7 +1,9 @@
 body { 
-    background-image: url(https://images.unsplash.com/photo-1537420327992-d6e192287183?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80);
-    background-size: cover;
+    background-image: url(https://www.wallpaperup.com/uploads/wallpapers/2014/01/21/234414/e688272d4a4c18408e0549a7f4d7183f.jpg);
+    background-size: 100%;
+    background-attachment: fixed;
     color: white; 
+    
 }
 
 .character-card {
@@ -284,3 +286,47 @@ body {
   cursor: pointer;
 }
   
+.planet-card {
+  border: grey solid 1px;
+  border-radius: 5px; 
+  padding: 1rem;
+  width: 50rem;
+  height: 42rem;
+  display: block;
+  margin: 1rem 2rem;
+  box-shadow: 3px 4px gray;
+  background-color: rgb(34, 33, 33);
+  background-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1070&q=80');
+}
+
+.planet-name {
+  font-size: 35px; 
+  color: whitesmoke;
+  -webkit-text-stroke: .5px blue;
+  text-align: center;
+ }
+
+.planet-image {
+  width: 20rem;
+  height: 20rem;
+  float: left;
+}
+
+.planet-population {
+  font-size: 20px; 
+  color: whitesmoke;
+  text-align: center;
+}
+
+.planet-climate {
+  font-size: 20px; 
+  color: whitesmoke;
+  text-align: center;
+}
+.env-image { 
+  width: 50rem;
+  height: 22rem;
+  display: block;
+  text-align: center;
+  
+}
