@@ -1,26 +1,27 @@
 /* PLANET PLAN
-create button to show all planets
-slap on dom
-addeventListener on click
-render all planets
-render planet
-    -make div
-    -make dplanet card
-        -contains innerhtml with text
-        -include array of charaters with links to show their individual info? as a popup?
-        -event Listeners for edit and delete buttons
-        -event listener to show popup of extra image
+    -include array of charaters with links to show their individual info? as a popup?
+        -mini foto, name and species
+    -event Listeners for edit and delete buttons
+    -On character's card planet will mouseover to a popup with planet info
+    -change addPlanetDivContent to be built by js as opposed to innerHTML cause it's ugly as shit
 
-will need to change characters so that fetch  to render them occurs when clicked on a button to show all (like with planets)
-    -maybe planet will link to a popup with planet info??
+    -refactor to class syntax
 
 MUST FIX: when a user makes a new character they must either select a planet from a dropdown OR make an entirely neeew planet with accepts nested attributes for ew
-
 */
+
+function addPlanetButton(){
+    const addButton = document.createElement("button")
+    addButton.className = "add-planet"
+    addButton.innerText = "Be God. Make a Planet."
+    app.appendChild(addButton)
+  }
 
 const planetsBtn = document.querySelector(".planets-button")
 planetsBtn.addEventListener("click", () => {
-    init()
+    app.innerHTML = ""
+    init();
+    addPlanetButton();
 })
 
 function init(){
@@ -29,7 +30,7 @@ function init(){
 
 function renderPlanets(planets){
     const planetsList = document.createElement("div")
-    body.appendChild(planetsList)
+    app.appendChild(planetsList)
     planetsList.outerHTML = '<div class="planets-list">'
     planets.forEach(renderPlanet)
 }
@@ -47,18 +48,21 @@ function addPlanetDivContent(div, planet){
     <img class="planet-image" src="${planet.planet_image}" alt=${planet.name}/>
     <p class="planet-name"><strong>${planet.name}</strong></p>
     <p class="planet-population">Population: ${planet.population}</p>
+    `
+    const climateDiv = document.createElement('div')
+    climateDiv.innerHTML = `
     <p class="planet-climate">Climate: ${planet.climate}</p>
     <img class="env-image" src="${planet.env_image}" alt=${planet.name}/>
     `
     const ul = document.createElement("ul")
+    ul.className = "planet-characters-ul"
+    ul.innerText = "Characters from this planet:"
     planet.characters.forEach(char => {
-        console.log(char.name)
         let li = document.createElement("li")
+        li.className = "planet-characters-li"
         li.innerText = char.name
         ul.appendChild(li)
     })
-    // const planetPop = document.querySelector(".planet-population")
-    // planetPop.appendChild(ul)
-    div.appendChild(ul)
+    div.append(ul, climateDiv)
 }
 

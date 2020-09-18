@@ -1,8 +1,17 @@
+/* CHARACTER PLAN
+  -move to character.js
+  -refactor with adaptor pattern and class syntax
+  -On character's card planet will mouseover to a popup with planet info
+  -JORDAN go through line by line (in new repo???) to figure out where we went wrong with our patch rerendering
+    -get all that extra code out of master branch
+  MUST FIX: when a user makes a new character they must either select a planet from a dropdown OR make an entirely neeew planet with accepts nested attributes for ew
 
+*/
 const BASE_URL = "http://localhost:3000";
 const CHARACTERS_URL = `${BASE_URL}/characters`;
 const body = document.querySelector("body")
 const modal = document.querySelector("#myModal")
+const app = document.querySelector(".app")
 // const main = document.querySelector("main")
 // const charactersDiv = document.createElement("div")
 const addButton = document.createElement("button") 
@@ -10,24 +19,15 @@ addButton.innerText = "Add a New Character!"
 addButton.id = "add-character-btn"
 
 function addCharButton(){
-  body.appendChild(addButton)
+  app.appendChild(addButton)
 }
-// main.append(charactersDiv)
-
-// const charactersList = document.createElement("div")
-// charactersList.className = "characters-list"
-// const planetsList = document.createElement("div")
-// planetsList.className = "planets-list"
 
 const charactersButton = document.querySelector(".characters-button")
 charactersButton.addEventListener("click", () => {
+  app.innerHTML = ""
   fetchCharacters(); 
   addCharButton();
-  // planetsList.innerHTML = ""
 })
-
-
-
 
 
 addButton.addEventListener("click", () => {
@@ -123,7 +123,7 @@ function fetchCharacters(){
 
 function renderCharacters(json){
     const charactersList = document.createElement("div")
-    body.appendChild(charactersList)
+    app.appendChild(charactersList)
     charactersList.className = "characters-list"
     json.forEach(character => {
        renderCharacter(character)

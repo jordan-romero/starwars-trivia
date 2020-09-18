@@ -141,7 +141,6 @@ body {
     color: gray;
   }
   
-  
   .input-text {
     border-radius: 5px;
     height: 2rem;
@@ -151,7 +150,6 @@ body {
     margin: 3px;
     color: black;
   }
-
 
   /* lskjadfasjkdflkajsd;flkjasdlkfjasd;lkfjasldkjfal;skdjf */
   /* alkjsdflakjsdhflkajsdhfklajshflkjashdfkjhasdkfjhaskdfjhaslkdfj */
@@ -216,7 +214,6 @@ body {
   opacity: 0.8;
 }
 
-
 .character-button.delete {
   background-color: rgb(104, 5, 5);
   border-radius: 4px;
@@ -226,17 +223,17 @@ body {
   justify-content: center;
 }
 
-.character-button:hover {
-  background-color: black;
-  text-decoration: underline;
-}
-
 .character-button.edit {
   background-color: rgb(6, 6, 97);
   border-radius: 4px;
   display: flex; 
   align-items: center;
   justify-content: center;
+}
+
+.character-button:hover {
+  background-color: black;
+  text-decoration: underline;
 }
 
 /*///////////////////////////*/
@@ -291,7 +288,7 @@ body {
   border-radius: 5px; 
   padding: 1rem;
   width: 50rem;
-  height: 42rem;
+  height: auto;
   display: block;
   margin: 1rem 2rem;
   box-shadow: 3px 4px gray;
@@ -310,6 +307,8 @@ body {
   width: 20rem;
   height: 20rem;
   float: left;
+  margin-bottom: 3rem;
+  border-radius: 5px;
 }
 
 .planet-population {
@@ -318,15 +317,30 @@ body {
   text-align: center;
 }
 
+.planet-characters-ul {
+  font-size: 23px; 
+  color: whitesmoke;
+  text-align: center;
+  list-style: none;
+}
+
+.planet-characters-li {
+  font-size: 20px; 
+  color: whitesmoke;
+  text-align: center;
+  
+}
+
 .planet-climate {
   font-size: 20px; 
   color: whitesmoke;
   text-align: center;
 }
+
 .env-image { 
   width: 50rem;
   height: 22rem;
   display: block;
   text-align: center;
-  
+  border-radius: 5px; 
 }
